@@ -12,81 +12,85 @@ report 50100 Invoice
 
     dataset
     {
-
         //HEADER
         dataitem(SalesInvoiceHeader; "Sales Invoice Header")
         {
             column(Image; CompanyInformation.Picture) { }
             column(CompanyAddres; CompanyInformation."Description 2" + ': ' + CompanyInformation.Address + ' | ' + CompanyInformation."Post Code" + ' ' + CompanyInformation.City + ' | ' + CompanyInformation."Phone No.") { }
             column(EmailAndWeb; CompanyInformation."E-Mail" + ' | ' + CompanyInformation."Home Page") { }
-
             column(DocumentDate; "Document Date") { }
             column(InvoiceNumber; "No.") { }
-
-            // --- INICIO DEL CAMBIO (BLOB) ---
-            // 1. Comentamos o eliminamos la columna BLOB que da error
-            // column(WorkDescription; "Work Description") { }
-
-            // 2. Añadimos la nueva columna que apunta a nuestra variable de texto
             column(WorkDescription_Text; WorkDescriptionAsText) { }
-            // --- FIN DEL CAMBIO ---
-
             column(CustomerNumber; Customer."No.") { }
             column(CustomerName; "Sell-to Customer Name") { }
             column(CustomerAddress; "Sell-to Address") { }
             column(PCAndCity; "Sell-to Post Code" + ' ' + "Sell-to City") { }
             column(CIF; "VAT Registration No.") { }
+            // Total IVA excl. (EUR) -> Suma de "Line Amount"
+            column(TotalExclVAT_Header; Amount) { }
+
+            // Total IVA incl. (Eur) -> Suma de "Amount Including VAT"
+            column(TotalInclVAT_Header; "Amount Including VAT") { }
+
+            // IVA TOTAL (EUR) -> Suma de "VAT Amount"
+            // (Es mejor restarlos para evitar problemas de redondeo)
+            column(TotalVAT_Header; "Amount Including VAT" - Amount) { }
+
+
+            //BODY
+            dataitem(SalesInvoiceLine; "Sales Invoice Line")
+            {
+
+                DataItemLink = "Document No." = field("No.");
+                column(Concept; "Description") { }
+                column(Quantity; Quantity) { }
+                column(UnitPrice; "Unit Price") { }
+                column(LineAmount; "Line Amount") { }
+                column(InvoiceType; "VAT Prod. Posting Group") { }
+                column(Total; "Amount Including VAT") { }
+
+                trigger OnAfterGetRecord()
+                begin
+                    if (SalesInvoiceLine.Description = '') then
+                        CurrReport.Skip(); // Si la descripcion esta vacia se la salta y no la imprime
+
+                end;
+
+            }
 
             // Se ejecuta ANTES de empezar a leer las facturas
             trigger OnPreDataItem()
             begin
                 // Cargamos la info de la compañía UNA SOLA VEZ
-                if not CompanyInformation.Get() then
+                if CompanyInformation.Get() then
+                    // --- OPTIMIZACIÓN ---
+                    // Se carga la imagen aquí, una sola vez.
+                    CompanyInformation.CalcFields(Picture)
+                else
                     CompanyInformation.Init();
             end;
 
             // Se ejecuta DESPUÉS de leer CADA factura
             trigger OnAfterGetRecord()
             var
-                // Variable local para el stream
                 BlobInStream: InStream;
             begin
-                // Lógica que ya tenías
-                CompanyInformation.CalcFields(Picture);
                 if not Customer.Get("Bill-to Customer No.") then
                     Customer.Init();
 
-                // --- INICIO LÓGICA BLOB A TEXTO ---
-
-                // 3. Limpiamos la variable para este registro
+                // --- LÓGICA BLOB A TEXTO ---
                 WorkDescriptionAsText := '';
-
-                // 4. Comprobamos si el campo BLOB tiene contenido
                 if SalesInvoiceHeader."Work Description".HasValue() then begin
-
-                    // 5. Cargamos el campo BLOB (necesario como con las imágenes)
                     SalesInvoiceHeader.CalcFields("Work Description");
-
-                    // 6. Creamos un InStream (tubería de lectura)
                     SalesInvoiceHeader."Work Description".CreateInStream(BlobInStream);
-
-                    // 7. Leemos todo el contenido del BLOB y lo metemos en la variable BigText
                     BlobInStream.Read(WorkDescriptionAsText);
                 end;
-                // --- FIN LÓGICA BLOB A TEXTO ---
             end;
         }
-
-        // ... (resto de tu dataitem de líneas si lo tuvieras) ...
     }
-
-    // ... (labels) ...
-
     var
         CompanyInformation: Record "Company Information";
         Customer: Record Customer;
-
-        // --- 8. VARIABLE GLOBAL AÑADIDA ---
-        // Aquí guardaremos el texto del BLOB
         WorkDescriptionAsText: Text;
+
 }
