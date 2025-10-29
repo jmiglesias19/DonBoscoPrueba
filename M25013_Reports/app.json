@@ -28,5 +28,6 @@
   "runtime": "15.2",
   "features": [
     "NoImplicitWith"
-  ]
+  ],
+  "suppressWarnings": ["AL0432"]
 }
