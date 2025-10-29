@@ -9,7 +9,9 @@ report 50100 Invoice
     tabledata "Sales Invoice Line" = r,
     tabledata "VAT Amount Line" = r,
     tabledata "VAT Product Posting Group" = r,
-    tabledata "Cust. Ledger Entry" = r;
+    tabledata "Cust. Ledger Entry" = r,
+    tabledata "Payment Terms" = r,
+    tabledata "Payment Method" = r;
     RDLCLayout = 'src/Reports/InvoiceReport.rdl';
     UsageCategory = ReportsAndAnalysis;
 
@@ -32,7 +34,11 @@ report 50100 Invoice
             column(TotalExclVAT_Header; Amount) { }
             column(TotalInclVAT_Header; "Amount Including VAT") { }
             column(TotalVAT_Header; "Amount Including VAT" - Amount) { }
-            column(ExpirationDate; CustLedEnt."Due Date") { }
+
+            column(PaymentTermsDescription; PaymentTermsDescription) { } // Descripción del Término de Pago
+            column(PaymentMethodDescription; PaymentMethodDescription) { } // Descripción de la Forma de Pago
+            column(CompanyBankName; CompanyInformation."Bank Name") { } // Banco: (de Info. Empresa)
+            column(CompanyIBAN; CompanyInformation.IBAN) { }
 
 
             //BODY
@@ -59,6 +65,8 @@ report 50100 Invoice
                 end;
             }
 
+
+
             trigger OnPreDataItem()
             begin
                 // ... (tu código de CompanyInformation)
@@ -84,15 +92,17 @@ report 50100 Invoice
                     BlobInStream.Read(WorkDescriptionAsText);
                 end;
 
-                // --- CORRECCIÓN 4: Cargar el movimiento de cliente ---
-                // La factura de venta (ya registrada) tiene un campo 
-                // que nos dice exactamente qué movimiento de cliente se creó.
-                // Usamos .Get() para cargar ese registro en nuestra variable CustLedEnt.
+                // ++ AÑADIDO: Lógica para cargar las descripciones ++
+                // Cargar Término de Pago
+                PaymentTermsDescription := '';
+                if PaymentTerms.Get("Payment Terms Code") then
+                    PaymentTermsDescription := PaymentTerms.Description;
 
-                CustLedEnt.Reset(); // Limpiamos la variable
-                if SalesInvoiceHeader."Cust. Ledger Entry No." <> 0 then
-                    CustLedEnt.Get(SalesInvoiceHeader."Cust. Ledger Entry No.");
-                // --- FIN CORRECCIÓN 4 ---
+                // Cargar Forma de Pago
+                PaymentMethodDescription := '';
+                if PaymentMethod.Get("Payment Method Code") then
+                    PaymentMethodDescription := PaymentMethod.Description;
+                // ++ FIN DE AÑADIDO ++
 
             end;
         }
@@ -101,7 +111,11 @@ report 50100 Invoice
         CompanyInformation: Record "Company Information";
         Customer: Record Customer;
         VATPPG: Record "VAT Product Posting Group";
-        CustLedEnt: Record "Cust. Ledger Entry";
+        PaymentTerms: Record "Payment Terms";
+        PaymentMethod: Record "Payment Method";
         WorkDescriptionAsText: Text;
         IVAClause: Text;
+
+        PaymentTermsDescription: Text;
+        PaymentMethodDescription: Text;
 }
