@@ -20,6 +20,7 @@ report 50100 Invoice
         //HEADER
         dataitem(SalesInvoiceHeader; "Sales Invoice Header")
         {
+            column(CommercialRegistryText; CompanyInformation.CommercialRegistryText) { }
             column(Image; CompanyInformation.Picture) { }
             column(CompanyAddres; CompanyInformation."Description 2" + ': ' + CompanyInformation.Address + ' | ' + CompanyInformation."Post Code" + ' ' + CompanyInformation.City + ' | ' + CompanyInformation."Phone No.") { }
             column(EmailAndWeb; CompanyInformation."E-Mail" + ' | ' + CompanyInformation."Home Page") { }
@@ -41,6 +42,8 @@ report 50100 Invoice
             column(CompanyIBAN; CompanyInformation.IBAN) { }
 
 
+
+
             //BODY
             dataitem(SalesInvoiceLine; "Sales Invoice Line")
             {
@@ -54,6 +57,8 @@ report 50100 Invoice
                 column(IVAPercentage; "VAT %") { }
                 column(IVAClause; IVAClause) { }
 
+
+
                 trigger OnAfterGetRecord()
                 begin
                     if (SalesInvoiceLine.Description = '') then
@@ -63,6 +68,15 @@ report 50100 Invoice
                     if VATPPG.Get(SalesInvoiceLine."VAT Prod. Posting Group") then
                         IVAClause := VATPPG.IVAClause;
                 end;
+            }
+
+            dataitem(CustLedEnt; "Cust. Ledger Entry")
+            {
+                DataItemLink = "Document No." = field("No.");
+                column(DueDate; "Due Date") { }
+                column(DueAmount; "Original Amount") { }
+                column(BillNo; "Bill No.") { }
+
             }
 
 
@@ -92,7 +106,6 @@ report 50100 Invoice
                     BlobInStream.Read(WorkDescriptionAsText);
                 end;
 
-                // ++ AÑADIDO: Lógica para cargar las descripciones ++
                 // Cargar Término de Pago
                 PaymentTermsDescription := '';
                 if PaymentTerms.Get("Payment Terms Code") then
@@ -102,17 +115,26 @@ report 50100 Invoice
                 PaymentMethodDescription := '';
                 if PaymentMethod.Get("Payment Method Code") then
                     PaymentMethodDescription := PaymentMethod.Description;
-                // ++ FIN DE AÑADIDO ++
+
+                // if (CustLedEnt."Bill No." = '') then
+                //     CurrReport.Skip();
 
             end;
         }
     }
+
+    labels
+    {
+
+    }
+
     var
         CompanyInformation: Record "Company Information";
         Customer: Record Customer;
         VATPPG: Record "VAT Product Posting Group";
         PaymentTerms: Record "Payment Terms";
         PaymentMethod: Record "Payment Method";
+        // CustLedEdge: Record "Cust. Ledger Entry";
         WorkDescriptionAsText: Text;
         IVAClause: Text;
 

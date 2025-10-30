@@ -10,6 +10,15 @@ pageextension 50101 CompInfoPageExt extends "Company Information"
                 ApplicationArea = All;
             }
         }
+
+        addbefore(Picture)
+        {
+            field(CommercialRegistryText; Rec.CommercialRegistryText)
+            {
+                Caption = 'Commercial Registry Text';
+                ApplicationArea = All;
+            }
+        }
     }
 
     actions

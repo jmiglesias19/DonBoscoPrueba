@@ -8,16 +8,15 @@ tableextension 50100 CompanyInfoExt extends "Company Information"
             DataClassification = ToBeClassified;
             ToolTip = 'Specifies the name of the company.';
         }
+
+        field(50101; "CommercialRegistryText"; Text[500])
+        {
+            AllowInCustomizations = Always;
+            Caption = 'Commercial Registry Text';
+            ToolTip = 'Specifies the commercial registry text.';
+        }
     }
 
-    keys
-    {
-        // Add changes to keys here
-    }
 
-    fieldgroups
-    {
-        // Add changes to field groups here
-    }
 
 }
