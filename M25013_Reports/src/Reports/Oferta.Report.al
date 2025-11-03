@@ -1,27 +1,28 @@
-report 50100 Invoice
+report 50101 Oferta
 {
     ApplicationArea = All;
     Caption = 'Invoice Report';
     DefaultLayout = RDLC;
     Permissions = tabledata "Company Information" = r,
     tabledata Customer = r,
-    tabledata "Sales Invoice Header" = r,
-    tabledata "Sales Invoice Line" = r,
+    tabledata "Sales Header" = r,
+    tabledata "Sales Line" = r,
     tabledata "VAT Amount Line" = r,
     tabledata "VAT Product Posting Group" = r,
     tabledata "Cust. Ledger Entry" = r,
     tabledata "Payment Terms" = r,
     tabledata "Payment Method" = r;
-    RDLCLayout = 'src/Reports/InvoiceReport.rdl';
+    RDLCLayout = 'src/Reports/OfertaReport.rdl';
     UsageCategory = ReportsAndAnalysis;
 
     dataset
     {
         //HEADER
-        dataitem(SalesInvoiceHeader; "Sales Invoice Header")
+        dataitem(SalesHeader; "Sales Header")
         {
+
             //BODY
-            dataitem(SalesInvoiceLine; "Sales Invoice Line")
+            dataitem(SalesLine; "Sales Line")
             {
                 DataItemLink = "Document No." = field("No.");
 
@@ -29,17 +30,17 @@ report 50100 Invoice
                 column(Image; CompanyInformation.Picture) { }
                 column(CompanyAddres; CompanyInformation."Description 2" + ': ' + CompanyInformation.Address + ' | ' + CompanyInformation."Post Code" + ' ' + CompanyInformation.City + ' | ' + CompanyInformation."Phone No.") { }
                 column(EmailAndWeb; CompanyInformation."E-Mail" + ' | ' + CompanyInformation."Home Page") { }
-                column(DocumentDate; SalesInvoiceHeader."Document Date") { }
-                column(InvoiceNumber; SalesInvoiceHeader."No.") { }
+                column(DocumentDate; SalesHeader."Document Date") { }
+                column(OfferNumber; SalesHeader."No.") { }
                 column(WorkDescription_Text; WorkDescriptionAsText) { }
                 column(CustomerNumber; "Sell-to Customer No.") { }
                 column(CustomerName; "Sell-to Customer Name")
                 {
                     IncludeCaption = true;
                 }
-                column(CustomerAddress; SalesInvoiceHeader."Sell-to Address") { }
-                column(PCAndCity; SalesInvoiceHeader."Sell-to Post Code" + ' ' + SalesInvoiceHeader."Sell-to City") { }
-                column(CIF; SalesInvoiceHeader."VAT Registration No.") { }
+                column(CustomerAddress; SalesHeader."Sell-to Address") { }
+                column(PCAndCity; SalesHeader."Sell-to Post Code" + ' ' + SalesHeader."Sell-to City") { }
+                column(CIF; SalesHeader."VAT Registration No.") { }
                 column(TotalExclVAT_Header; Amount) { }
                 column(TotalInclVAT_Header; "Amount Including VAT") { }
                 column(TotalVAT_Header; "Amount Including VAT" - Amount) { }
@@ -62,11 +63,11 @@ report 50100 Invoice
 
                 trigger OnAfterGetRecord()
                 begin
-                    if (SalesInvoiceLine.Description = '') then
+                    if (SalesLine.Description = '') then
                         CurrReport.Skip(); // Si la descripcion esta vacia se la salta y no la imprime
 
                     IVAClause := '';
-                    if VATPPG.Get(SalesInvoiceLine."VAT Prod. Posting Group") then
+                    if VATPPG.Get(SalesLine."VAT Prod. Posting Group") then
                         IVAClause := VATPPG.IVAClause;
                 end;
             }
@@ -107,9 +108,9 @@ report 50100 Invoice
                 BlobInStream: InStream;
             begin
                 WorkDescriptionAsText := '';
-                if SalesInvoiceHeader."Work Description".HasValue() then begin
-                    SalesInvoiceHeader.CalcFields("Work Description");
-                    SalesInvoiceHeader."Work Description".CreateInStream(BlobInStream);
+                if SalesHeader."Work Description".HasValue() then begin
+                    SalesHeader.CalcFields("Work Description");
+                    SalesHeader."Work Description".CreateInStream(BlobInStream);
                     BlobInStream.ReadText(WorkDescriptionAsText, 65001);
 
                     // Reemplazar caracteres corruptos comunes utilizando nuestra propia codificación, lo sorprendente es que funciona
