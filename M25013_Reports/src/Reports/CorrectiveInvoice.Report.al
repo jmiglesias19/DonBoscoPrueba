@@ -95,11 +95,9 @@ report 50102 CorrectiveInvoice
 
             trigger OnPreDataItem()
             begin
-                // ... (tu código de CompanyInformation)
-                CompanyInformation.Get();
-                CompanyInformation.CalcFields(Picture)
-                // else
-                // CompanyInformation.Init();
+                if CompanyInformation.Get() then
+                    CompanyInformation.CalcFields(Picture);
+                CompanyInformation.Init();
             end;
 
             // Se ejecuta DESPUÉS de leer CADA factura
