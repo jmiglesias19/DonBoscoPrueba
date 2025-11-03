@@ -11,7 +11,7 @@
       <am:Name>PBIRB</am:Name>
       <am:Version>15.7.1813.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-11-03T10:58:07.0740600Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-11-03T12:02:26.8444928Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -502,7 +502,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>3.81944in</Top>
+            <Top>4.06944in</Top>
             <Left>0in</Left>
             <Height>0.8125in</Height>
             <Width>7.2558in</Width>
@@ -764,7 +764,7 @@
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <Top>12.77082cm</Top>
+            <Top>13.40582cm</Top>
             <Left>11.5357cm</Left>
             <Height>1.79587cm</Height>
             <Width>6.89405cm</Width>
@@ -776,7 +776,7 @@
             </Style>
           </Tablix>
           <Line Name="Line1">
-            <Top>12.77082cm</Top>
+            <Top>13.40582cm</Top>
             <Left>0.01489cm</Left>
             <Height>0cm</Height>
             <Width>18.41486cm</Width>
@@ -788,7 +788,7 @@
             </Style>
           </Line>
           <Line Name="Line2">
-            <Top>14.60197cm</Top>
+            <Top>15.23697cm</Top>
             <Height>0cm</Height>
             <Width>18.484cm</Width>
             <ZIndex>3</ZIndex>
@@ -1230,7 +1230,7 @@
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <Top>16.23398cm</Top>
+            <Top>16.86898cm</Top>
             <Left>0.00005cm</Left>
             <Height>1.62333cm</Height>
             <Width>18.48396cm</Width>
@@ -1242,7 +1242,7 @@
             </Style>
           </Tablix>
           <Line Name="Line3">
-            <Top>17.25731cm</Top>
+            <Top>17.89231cm</Top>
             <Left>0.00006cm</Left>
             <Height>0cm</Height>
             <Width>18.42972cm</Width>
@@ -1485,7 +1485,7 @@
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <Top>18.57085cm</Top>
+            <Top>19.20585cm</Top>
             <Left>0.00007cm</Left>
             <Height>0.6cm</Height>
             <Width>18.48395cm</Width>
@@ -1497,7 +1497,7 @@
             </Style>
           </Tablix>
           <Line Name="Line4">
-            <Top>18.57085cm</Top>
+            <Top>19.20585cm</Top>
             <Height>0cm</Height>
             <Width>18.42979cm</Width>
             <ZIndex>7</ZIndex>
@@ -1774,13 +1774,12 @@
                     </GroupExpressions>
                   </Group>
                   <Visibility>
-                    <Hidden>=IsNothing(Fields!IVAClause.Value) or Fields!IVAClause.Value=""</Hidden>
+                    <Hidden>=IsNothing(Fields!InvoiceType.Value)</Hidden>
                   </Visibility>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>DataSet_Result</DataSetName>
-            <Top>20.37002cm</Top>
+            <Top>21.00502cm</Top>
             <Left>0.00003cm</Left>
             <Height>1.2cm</Height>
             <Width>18.42971cm</Width>
@@ -1803,7 +1802,7 @@
             </Style>
           </Tablix>
           <Line Name="Line5">
-            <Top>20.97002cm</Top>
+            <Top>21.60502cm</Top>
             <Left>0.00003cm</Left>
             <Height>0cm</Height>
             <Width>18.42972cm</Width>
@@ -1828,7 +1827,7 @@
             </Style>
           </Line>
           <Line Name="Line6">
-            <Top>21.57002cm</Top>
+            <Top>22.20502cm</Top>
             <Height>0cm</Height>
             <Width>18.42976cm</Width>
             <ZIndex>10</ZIndex>
@@ -1869,7 +1868,7 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>15.63398cm</Top>
+            <Top>16.26898cm</Top>
             <Left>0.00003cm</Left>
             <Height>0.6cm</Height>
             <Width>4.80188cm</Width>
@@ -1902,7 +1901,7 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>21.9046cm</Top>
+            <Top>22.5396cm</Top>
             <Left>0.01489cm</Left>
             <Height>0.6cm</Height>
             <Width>2.5cm</Width>
@@ -2048,7 +2047,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!DueAmount.Value</Value>
+                                  <Value>=Abs(Fields!DueAmount.Value)</Value>
                                   <Style>
                                     <FontFamily>Aptos</FontFamily>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -2100,25 +2099,13 @@
                     <TablixMember />
                   </TablixMembers>
                   <Visibility>
-                    <Hidden>=IsNothing(Fields!EntryNo.Value)
-OR
-(
-    (Sum(
-        IIf(
-            IsNothing(Fields!CreditAmount.Value),
-            0,
-            IIf(Fields!CreditAmount.Value &lt;&gt; 0, 1, 0)
-        ),
-    "DataSet_Result"
-    ) &gt; 0)
-    AND Fields!DocumentType.Value &lt;&gt; "Efecto"
-)</Hidden>
+                    <Hidden>=IsNothing(Fields!EntryNo.Value)</Hidden>
                   </Visibility>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>22.53988cm</Top>
+            <Top>23.17488cm</Top>
             <Left>0.01489cm</Left>
             <Height>1.2cm</Height>
             <Width>6.2027cm</Width>
@@ -2130,7 +2117,7 @@ OR
             </Style>
           </Tablix>
           <Line Name="Line7">
-            <Top>11.19627cm</Top>
+            <Top>11.83127cm</Top>
             <Height>0cm</Height>
             <Width>18.42975cm</Width>
             <ZIndex>14</ZIndex>
@@ -2373,9 +2360,10 @@ OR
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!InvoiceNumber.Value, "DataSet_Result")</Value>
+                    <Value>=First(Fields!DocumentDate.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontFamily>Aptos</FontFamily>
+                      <Format>D</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2385,9 +2373,9 @@ OR
               </Paragraph>
             </Paragraphs>
             <Top>3.24943in</Top>
-            <Left>0.74626in</Left>
+            <Left>1.02612in</Left>
             <Height>0.25in</Height>
-            <Width>1.5382in</Width>
+            <Width>2.80903in</Width>
             <ZIndex>22</ZIndex>
             <Style>
               <Border>
@@ -2407,7 +2395,7 @@ OR
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Nº Factura:</Value>
+                    <Value>Fecha emisión:</Value>
                     <Style>
                       <FontFamily>Aptos</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -2420,7 +2408,7 @@ OR
             <Top>3.24943in</Top>
             <Left>0.01362in</Left>
             <Height>0.25in</Height>
-            <Width>0.96875in</Width>
+            <Width>1.0125in</Width>
             <ZIndex>23</ZIndex>
             <Style>
               <Border>
@@ -2440,7 +2428,7 @@ OR
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Fecha emisión factura:</Value>
+                    <Value>Nº serie abono:</Value>
                     <Style>
                       <FontFamily>Aptos</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -2473,7 +2461,7 @@ OR
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!DocumentDate.Value, "DataSet_Result")</Value>
+                    <Value>=First(Fields!InvoiceNumber.Value, "DataSet_Result")</Value>
                     <Style>
                       <FontFamily>Aptos</FontFamily>
                       <Format>d' de 'MMMM' de 'yyyy</Format>
@@ -2486,7 +2474,7 @@ OR
               </Paragraph>
             </Paragraphs>
             <Top>3.05498in</Top>
-            <Left>1.52751in</Left>
+            <Left>1.08168in</Left>
             <Height>0.25in</Height>
             <Width>2.42708in</Width>
             <ZIndex>25</ZIndex>
@@ -2508,7 +2496,7 @@ OR
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Factura</Value>
+                    <Value>Factura rectificativa</Value>
                     <Style>
                       <FontFamily>Aptos</FontFamily>
                       <FontSize>24pt</FontSize>
@@ -2517,13 +2505,15 @@ OR
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <Top>1.44388in</Top>
-            <Left>6.01356in</Left>
+            <Left>4.07606in</Left>
             <Height>0.41667in</Height>
-            <Width>1.25in</Width>
+            <Width>3.17974in</Width>
             <ZIndex>26</ZIndex>
             <Style>
               <Border>
@@ -2553,7 +2543,7 @@ OR
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>3.42304in</Top>
+            <Top>3.625in</Top>
             <Left>0.01362in</Left>
             <Height>0.25in</Height>
             <Width>1.66667in</Width>
@@ -2585,7 +2575,7 @@ OR
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>3.42304in</Top>
+            <Top>3.625in</Top>
             <Left>1.52751in</Left>
             <Height>0.25in</Height>
             <Width>5.29166in</Width>
@@ -2861,7 +2851,7 @@ OR
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <Top>22.53988cm</Top>
+            <Top>23.17488cm</Top>
             <Left>6.25287cm</Left>
             <Height>2.4cm</Height>
             <Width>11.70677cm</Width>
@@ -2872,8 +2862,71 @@ OR
               </Border>
             </Style>
           </Tablix>
+          <Textbox Name="Textbox1">
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Nº factura corregida:</Value>
+                    <Style>
+                      <FontFamily>Aptos</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>8.71924cm</Top>
+            <Left>0.01492cm</Left>
+            <Height>0.6cm</Height>
+            <Width>3.63771cm</Width>
+            <ZIndex>32</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox12">
+            <rd:DefaultName>Textbox12</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Fields!CorrectedInvoiceNumber.Value</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>8.71924cm</Top>
+            <Left>3.30253cm</Left>
+            <Height>0.6cm</Height>
+            <Width>4.27271cm</Width>
+            <ZIndex>33</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>25.06278cm</Height>
+        <Height>25.88299cm</Height>
         <Style />
       </Body>
       <Width>18.48727cm</Width>
@@ -2919,7 +2972,7 @@ OR
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>2.54cm</Height>
+          <Height>1.93146cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2943,8 +2996,8 @@ OR
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>1.66225cm</Top>
-              <Left>0.01492cm</Left>
+              <Top>1.05371cm</Top>
+              <Left>0.07244cm</Left>
               <Height>0.87775cm</Height>
               <Width>18.41483cm</Width>
               <Style>
@@ -3459,6 +3512,9 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
+        <Field Name="CorrectedInvoiceNumber">
+          <DataField>CorrectedInvoiceNumber</DataField>
+        </Field>
         <Field Name="CommercialRegistryText">
           <DataField>CommercialRegistryText</DataField>
         </Field>
